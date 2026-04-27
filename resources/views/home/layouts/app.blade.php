@@ -173,7 +173,7 @@
                         </li>
                         <li class="flex items-center gap-2">
                             <i class="fa-solid fa-envelope" style="color:#ff5e14;"></i>
-                            <span>contact@immoseul.dz</span>
+                            <span>contact@Maelys-imo.dz</span>
                         </li>
                     </ul>
                 </div>

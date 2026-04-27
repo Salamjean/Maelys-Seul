@@ -76,7 +76,7 @@
                         <i class="fa-solid fa-envelope"
                             style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#9ca3af; font-size:14px;"></i>
                         <input type="email" name="email" value="{{ old('email') }}" required autofocus
-                            placeholder="admin@immoseul.com"
+                            placeholder="admin@maelys-imo.com"
                             style="width:100%; padding:11px 14px 11px 40px; border:1px solid #d1d5db; border-radius:10px; font-size:14px; color:#111827; outline:none; box-sizing:border-box;"
                             onfocus="this.style.borderColor='#ff5e14'; this.style.boxShadow='0 0 0 3px rgba(255,94,20,0.12)';"
                             onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none';">

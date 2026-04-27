@@ -1,6 +1,6 @@
 @extends('home.layouts.app')
 
-@section('title', 'Toutes nos annonces — ImmoSeul')
+@section('title', 'Toutes nos annonces — Maelys-imo')
 
 @section('content')
 <section class="py-16 bg-white">

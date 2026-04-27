@@ -1,6 +1,6 @@
 @extends('home.layouts.app')
 
-@section('title', 'ImmoSeul — Trouvez votre logement à louer')
+@section('title', 'Maelys-imo — Trouvez votre logement à louer')
 
 @section('content')
 
@@ -207,7 +207,7 @@
                         La plateforme immobilière<br>de confiance
                     </h2>
                     <p class="text-gray-500 mb-10 leading-relaxed">
-                        ImmoSeul vous offre une expérience unique pour publier et trouver des biens à louer. Des
+                        Maelys-imo vous offre une expérience unique pour publier et trouver des biens à louer. Des
                         annonces vérifiées, un accompagnement personnalisé et des outils modernes pour faciliter votre
                         recherche de logement.
                     </p>
@@ -303,7 +303,7 @@
                         Publiez votre bien à louer gratuitement
                     </h2>
                     <p class="text-blue-200 text-lg max-w-xl mx-auto mb-8">
-                        Rejoignez des milliers de propriétaires qui font confiance à ImmoSeul pour louer leurs biens
+                        Rejoignez des milliers de propriétaires qui font confiance à Maelys-imo pour louer leurs biens
                         rapidement et trouver des locataires sérieux.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -334,7 +334,7 @@
                 <h2 class="text-3xl sm:text-4xl font-bold mt-2" style="color:#02245b;">Ce que disent nos clients</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
-                @foreach ([['name' => 'Karim Benali', 'role' => 'Acheteur', 'comment' => 'J\'ai trouvé mon appartement en moins d\'une semaine ! La plateforme est très simple à utiliser et les annonces sont toutes vérifiées.', 'stars' => 5], ['name' => 'Nadia Hamid', 'role' => 'Propriétaire', 'comment' => 'J\'ai vendu mon bien en 3 semaines. L\'équipe ImmoSeul m\'a accompagnée tout au long du processus. Je recommande vivement !', 'stars' => 5], ['name' => 'Youcef Mansouri', 'role' => 'Locataire', 'comment' => 'Excellent service ! J\'ai trouvé un studio meublé à Oran très rapidement. Les photos et descriptions sont fidèles à la réalité.', 'stars' => 5]] as $review)
+                @foreach ([['name' => 'Karim Benali', 'role' => 'Acheteur', 'comment' => 'J\'ai trouvé mon appartement en moins d\'une semaine ! La plateforme est très simple à utiliser et les annonces sont toutes vérifiées.', 'stars' => 5], ['name' => 'Nadia Hamid', 'role' => 'Propriétaire', 'comment' => 'J\'ai vendu mon bien en 3 semaines. L\'équipe Maelys-imo m\'a accompagnée tout au long du processus. Je recommande vivement !', 'stars' => 5], ['name' => 'Youcef Mansouri', 'role' => 'Locataire', 'comment' => 'Excellent service ! J\'ai trouvé un studio meublé à Oran très rapidement. Les photos et descriptions sont fidèles à la réalité.', 'stars' => 5]] as $review)
                     <div class="bg-white rounded-2xl p-7 shadow-sm border border-gray-100 hover:shadow-md transition">
                         <div class="flex gap-1 mb-4">
                             @for ($s = 0; $s < $review['stars']; $s++)

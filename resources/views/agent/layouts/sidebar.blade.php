@@ -13,7 +13,7 @@
     {{-- Logo / Header --}}
     <div style="padding:32px 24px; display:flex; flex-direction:column; align-items:center; text-align:center;">
         <div style="position:relative; margin-bottom:15px;">
-            <img src="{{ asset('assets/images/maelys.jpg') }}" alt="ImmoSeul"
+            <img src="{{ asset('assets/images/maelys.jpg') }}" alt="Maelys-imo"
                 style="width:70px; height:70px; object-fit:cover; border-radius:18px; border:3px solid rgba(255,94,20,0.2); box-shadow:0 8px 16px rgba(0,0,0,0.3);">
             <div style="position:absolute; bottom:-5px; right:-5px; width:20px; height:20px; background:#10b981; border:3px solid #02245b; border-radius:50%;"
                 title="Agent en ligne"></div>
@@ -89,6 +89,8 @@
                    style="display:block; padding:8px 0; text-decoration:none; color:rgba(255,255,255,0.45); font-size:13px; font-weight:500;">Ajouter un locataire</a>
                 <a href="{{ route('agent.locataires.index') }}" class="sidebar-sublink {{ request()->routeIs('agent.locataires.index') ? 'active' : '' }}" 
                    style="display:block; padding:8px 0; text-decoration:none; color:rgba(255,255,255,0.45); font-size:13px; font-weight:500;">Liste des locataires</a>
+                <a href="{{ route('agent.locataires.moved_out') }}" class="sidebar-sublink {{ request()->routeIs('agent.locataires.moved_out') ? 'active' : '' }}" 
+                   style="display:block; padding:8px 0; text-decoration:none; color:rgba(255,255,255,0.45); font-size:13px; font-weight:500;">Anciens Locataires</a>
             </div>
         </div>
 
@@ -189,9 +191,10 @@
             OUTILS
         </p>
 
-        <a href="#" class="sidebar-link"
-            style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; text-decoration:none; color:rgba(255,255,255,0.6); font-size:14px; font-weight:600; margin-bottom:8px;">
-            <div style="width:32px; height:32px; background:rgba(255,255,255,0.05); border-radius:8px; display:flex; align-items:center; justify-content:center;">
+        <a href="{{ route('agent.files.index') }}" 
+            class="sidebar-link {{ request()->routeIs('agent.files.*') ? 'active' : '' }}"
+            style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; text-decoration:none; color:rgba(255,255,255,0.6); font-size:14px; font-weight:600; margin-bottom:8px; transition: all 0.3s ease;">
+            <div style="width:32px; height:32px; background:{{ request()->routeIs('agent.files.*') ? '#ff5e14' : 'rgba(255,255,255,0.05)' }}; border-radius:8px; display:flex; align-items:center; justify-content:center; color:white;">
                 <i class="fa-solid fa-folder-open" style="font-size:16px;"></i>
             </div>
             Mes Fichiers

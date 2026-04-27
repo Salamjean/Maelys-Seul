@@ -13,7 +13,7 @@
     {{-- Logo / Header --}}
     <div style="padding:32px 24px; display:flex; flex-direction:column; align-items:center; text-align:center;">
         <div style="position:relative; margin-bottom:15px;">
-            <img src="{{ asset('assets/images/maelys.jpg') }}" alt="ImmoSeul"
+            <img src="{{ asset('assets/images/maelys.jpg') }}" alt="Maelys-imo"
                 style="width:70px; height:70px; object-fit:cover; border-radius:18px; border:3px solid rgba(255,94,20,0.2); box-shadow:0 8px 16px rgba(0,0,0,0.3);">
             <div style="position:absolute; bottom:-5px; right:-5px; width:20px; height:20px; background:#10b981; border:3px solid #02245b; border-radius:50%;"
                 title="Admin en ligne"></div>
@@ -227,8 +227,13 @@
                 </a>
                 <a href="{{ route('admin.locataires.index') }}"
                     class="sidebar-sublink {{ request()->routeIs('admin.locataires.index') ? 'active' : '' }}"
-                    style="display:block; padding:8px 0; text-decoration:none; color:rgba(255,255,255,0.45); font-size:13px; font-weight:500; transition:color 0.2s;">
+                    style="display:block; padding:8px 0; text-decoration:none; color:{{ request()->routeIs('admin.locataires.index') ? '#ff5e14' : 'rgba(255,255,255,0.45)' }}; font-size:13px; font-weight:500; transition:color 0.2s;">
                     Liste des locataires
+                </a>
+                <a href="{{ route('admin.locataires.moved_out') }}"
+                    class="sidebar-sublink {{ request()->routeIs('admin.locataires.moved_out') ? 'active' : '' }}"
+                    style="display:block; padding:8px 0; text-decoration:none; color:{{ request()->routeIs('admin.locataires.moved_out') ? '#ff5e14' : 'rgba(255,255,255,0.45)' }}; font-size:13px; font-weight:500; transition:color 0.2s;">
+                    Anciens Locataires
                 </a>
             </div>
         </div>

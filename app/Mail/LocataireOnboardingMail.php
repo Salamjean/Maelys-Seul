@@ -23,7 +23,7 @@ class LocataireOnboardingMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Configuration de votre espace Locataire — ImmoSeul',
+            subject: 'Configuration de votre espace Locataire — Maelys-imo',
         );
     }
 

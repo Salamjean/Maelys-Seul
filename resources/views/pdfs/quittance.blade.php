@@ -356,7 +356,7 @@
         </div>
 
         <div class="footer">
-            MAELYS IMMOBILIER - Gestion Locative & Transactions • Abidjan, Côte d'Ivoire • www.immoseul.ci
+            MAELYS IMMOBILIER - Gestion Locative & Transactions • Abidjan, Côte d'Ivoire • www.Maelys-imo.ci
         </div>
     </div>
 </body>

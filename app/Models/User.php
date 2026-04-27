@@ -15,7 +15,8 @@ use Illuminate\Notifications\Notifiable;
     'piece_identite', 'attestation_travail', 'bulletin_salaire',
     'doc_extra_1', 'doc_extra_2', 'doc_extra_3',
     'contrat_bail', 'bien_id', 'contract_start_date', 'role',
-    'configuration_code', 'configuration_token', 'loyer_mensuel', 'added_by'
+    'configuration_code', 'configuration_token', 'loyer_mensuel', 'added_by',
+    'moved_out_at'
 ])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
@@ -38,6 +39,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'moved_out_at' => 'datetime',
         ];
     }
 }

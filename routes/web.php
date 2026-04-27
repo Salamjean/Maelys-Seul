@@ -127,11 +127,20 @@ Route::prefix('/admin')->group(function () {
         Route::resource('biens', \App\Http\Controllers\Agent\BienController::class);
 
         // Locataires
+        Route::get('locataires/{locataire}/reassign', [\App\Http\Controllers\Agent\LocataireController::class, 'reassign'])->name('locataires.reassign');
+        Route::post('locataires/{locataire}/reassign', [\App\Http\Controllers\Agent\LocataireController::class, 'processReassign'])->name('locataires.reassign_process');
+        Route::get('locataires/demenages', [\App\Http\Controllers\Agent\LocataireController::class, 'movedOut'])->name('locataires.moved_out');
+        Route::post('locataires/{locataire}/demenagement', [\App\Http\Controllers\Agent\LocataireController::class, 'moveOut'])->name('locataires.move_out');
         Route::resource('locataires', \App\Http\Controllers\Agent\LocataireController::class);
 
         // Rappels
         Route::get('/rappels', [\App\Http\Controllers\Agent\ReminderController::class, 'index'])->name('rappels.index');
         Route::post('/rappels/{locataire}/envoyer', [\App\Http\Controllers\Agent\ReminderController::class, 'sendReminder'])->name('rappels.send');
+
+        // Mes Fichiers
+        Route::get('/mes-fichiers', [\App\Http\Controllers\Agent\FileController::class, 'index'])->name('files.index');
+        Route::post('/mes-fichiers', [\App\Http\Controllers\Agent\FileController::class, 'store'])->name('files.store');
+        Route::delete('/mes-fichiers/{file}', [\App\Http\Controllers\Agent\FileController::class, 'destroy'])->name('files.destroy');
 
     });
 
@@ -195,7 +204,13 @@ Route::prefix('/admin')->group(function () {
         // Locataires
         Route::get('/locataires', [App\Http\Controllers\Admin\LocataireController::class, 'index'])->name('admin.locataires.index');
         Route::get('/locataires/ajouter', [App\Http\Controllers\Admin\LocataireController::class, 'create'])->name('admin.locataires.create');
+        Route::get('/locataires/demenages', [\App\Http\Controllers\Admin\LocataireController::class, 'movedOut'])->name('admin.locataires.moved_out');
+        Route::get('/locataires/{locataire}/modifier', [App\Http\Controllers\Admin\LocataireController::class, 'edit'])->name('admin.locataires.edit');
+        Route::put('/locataires/{locataire}', [App\Http\Controllers\Admin\LocataireController::class, 'update'])->name('admin.locataires.update');
         Route::post('/locataires', [App\Http\Controllers\Admin\LocataireController::class, 'store'])->name('admin.locataires.store');
+        Route::post('/locataires/{locataire}/demenagement', [\App\Http\Controllers\Admin\LocataireController::class, 'moveOut'])->name('admin.locataires.move_out');
+        Route::get('/locataires/{locataire}/reassign', [\App\Http\Controllers\Admin\LocataireController::class, 'reassign'])->name('admin.locataires.reassign');
+        Route::post('/locataires/{locataire}/reassign', [\App\Http\Controllers\Admin\LocataireController::class, 'processReassign'])->name('admin.locataires.reassign_process');
         Route::post('/locataires/{locataire}/payments/initiate', [\App\Http\Controllers\Admin\PaymentController::class, 'initiateCashPayment'])->name('admin.payments.initiate');
         Route::post('/payments/{payment}/confirm', [\App\Http\Controllers\Admin\PaymentController::class, 'confirmCashPayment'])->name('admin.payments.confirm');
         Route::post('/payments/confirm-direct', [\App\Http\Controllers\Admin\PaymentController::class, 'confirmByCode'])->name('admin.payments.confirm_direct');

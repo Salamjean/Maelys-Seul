@@ -104,7 +104,7 @@
                         </td>
                         <td class="px-8 py-6 text-center">
                             <div class="flex justify-center gap-2">
-                                <a href="#" class="p-2 bg-gray-100 text-gray-400 rounded-xl hover:bg-primary hover:text-white transition shadow-sm" title="Modifier">
+                                <a href="{{ route('agent.locataires.edit', $l->id) }}" class="p-2 bg-gray-100 text-gray-400 rounded-xl hover:bg-primary hover:text-white transition shadow-sm" title="Modifier">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 <button type="button" 
@@ -119,7 +119,13 @@
                                         title="Saisir Code OTP">
                                     <i class="fa-solid fa-key"></i>
                                 </button>
-                                <form action="{{ route('agent.locataires.destroy', $l->id) }}" method="POST" onsubmit="return confirm('Supprimer ce locataire ?')">
+                                <form action="{{ route('agent.locataires.move_out', $l->id) }}" method="POST" onsubmit="return confirm('Confirmer le déménagement de ce locataire ? Le bien sera libéré.')">
+                                    @csrf
+                                    <button type="submit" class="p-2 bg-indigo-50/50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition shadow-sm" title="Déménagement">
+                                        <i class="fa-solid fa-truck-ramp-box"></i>
+                                    </button>
+                                </form>
+                                <form action="{{ route('agent.locataires.destroy', $l->id) }}" method="POST" onsubmit="return confirm('Supprimer définitivement ce locataire ?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="p-2 bg-red-50/50 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition shadow-sm" title="Supprimer">

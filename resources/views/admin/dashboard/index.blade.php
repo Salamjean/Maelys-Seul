@@ -16,7 +16,7 @@
                 <p style="color:rgba(255,255,255,0.5); font-size:14px; font-weight:500;">{{ now()->translatedFormat('l d F Y') }}</p>
             </div>
             <div style="background:rgba(255,255,255,0.08); backdrop-filter:blur(10px); border-radius:20px; padding:20px; text-align:center; border:1px solid rgba(255,255,255,0.1); z-index:1;">
-                <img src="{{ asset('assets/images/maelys.jpg') }}" alt="ImmoSeul"
+                <img src="{{ asset('assets/images/maelys.jpg') }}" alt="Maelys-imo"
                     style="width:64px; height:64px; object-fit:cover; border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,0.3); display:block; margin:0 auto 10px; border:2px solid rgba(255,94,20,0.3);">
                 <p style="color:white; font-size:10px; letter-spacing:2px; text-transform:uppercase; font-weight:800; opacity:0.8;">Administration</p>
             </div>

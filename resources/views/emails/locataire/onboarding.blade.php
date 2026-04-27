@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Bienvenue chez ImmoSeul</title>
+    <title>Bienvenue chez Maelys-imo</title>
 </head>
 <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background-color: #02245b; padding: 30px; border-radius: 15px 15px 0 0; text-align: center;">
-        <h1 style="color: #ffffff; margin: 0;">Bienvenue chez ImmoSeul</h1>
+        <h1 style="color: #ffffff; margin: 0;">Bienvenue chez Maelys-imo</h1>
     </div>
     
     <div style="background-color: #ffffff; padding: 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 15px 15px;">
@@ -29,7 +29,7 @@
         </p>
         
         <p style="font-size: 13px; color: #9ca3af; margin-top: 40px; border-top: 1px solid #f3f4f6; padding-top: 20px;">
-            Si vous n'avez pas fait de demande de location chez ImmoSeul, veuillez ignorer cet e-mail.
+            Si vous n'avez pas fait de demande de location chez Maelys-imo, veuillez ignorer cet e-mail.
         </p>
     </div>
 </body>

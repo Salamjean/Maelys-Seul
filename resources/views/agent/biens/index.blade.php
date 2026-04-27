@@ -122,10 +122,12 @@
                                 </td>
                                 <td style="padding:12px 16px; text-align:center;">
                                     <div style="display:flex; justify-content:center; gap:8px;">
-                                        <a href="{{ route('agent.locataires.create', ['bien_id' => $bien->id]) }}" title="Ajouter un locataire"
-                                            style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px; background:#e0f2fe; color:#0ea5e9; text-decoration:none; transition:all 0.2s;"
-                                            onmouseover="this.style.background='#bae6fd'"><i class="fa-solid fa-user-plus"
-                                                style="font-size:14px;"></i></a>
+                                        @if($bien->statut !== 'loue')
+                                            <a href="{{ route('agent.locataires.create', ['bien_id' => $bien->id]) }}" title="Ajouter un locataire"
+                                                style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px; background:#e0f2fe; color:#0ea5e9; text-decoration:none; transition:all 0.2s;"
+                                                onmouseover="this.style.background='#bae6fd'"><i class="fa-solid fa-user-plus"
+                                                    style="font-size:14px;"></i></a>
+                                        @endif
                                         <a href="{{ route('agent.biens.show', $bien->id) }}" title="Voir"
                                             style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px; background:#f3f4f6; color:#4b5563; text-decoration:none; transition:all 0.2s;"
                                             onmouseover="this.style.background='#e5e7eb'"><i class="fa-solid fa-eye"

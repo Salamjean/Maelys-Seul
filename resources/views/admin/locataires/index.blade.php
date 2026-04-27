@@ -104,7 +104,7 @@
                         </td>
                         <td class="px-8 py-6 text-center">
                             <div class="flex justify-center gap-2">
-                                <a href="#" class="p-2 bg-gray-100 text-gray-400 rounded-xl hover:bg-primary hover:text-white transition shadow-sm" title="Modifier">
+                                <a href="{{ route('admin.locataires.edit', $l->id) }}" class="p-2 bg-gray-100 text-gray-400 rounded-xl hover:bg-primary hover:text-white transition shadow-sm" title="Modifier">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 <button type="button" 
@@ -113,6 +113,12 @@
                                         title="Initier Paiement">
                                     <i class="fa-solid fa-money-bill-wave"></i>
                                 </button>
+                                <form action="{{ route('admin.locataires.move_out', $l->id) }}" method="POST" onsubmit="return confirm('Confirmer le déménagement ?')">
+                                    @csrf
+                                    <button type="submit" class="p-2 bg-indigo-50/50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition shadow-sm" title="Déménagement">
+                                        <i class="fa-solid fa-truck-ramp-box"></i>
+                                    </button>
+                                </form>
                                 <button type="button" 
                                         onclick="resumePaymentValidation()"
                                         class="p-2 bg-orange-50/50 text-orange-500 rounded-xl hover:bg-orange-500 hover:text-white transition shadow-sm" 

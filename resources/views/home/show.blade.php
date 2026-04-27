@@ -1,6 +1,6 @@
 @extends('home.layouts.app')
 
-@section('title', $bien->typologie . ' à ' . $bien->commune . ' - ImmoSeul')
+@section('title', $bien->typologie . ' à ' . $bien->commune . ' - Maelys-imo')
 
 @section('content')
     {{-- A-Frame pour la 3D interactive --}}
