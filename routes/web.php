@@ -76,6 +76,14 @@ Route::prefix('/admin')->group(function () {
     Route::post('/login', [AdminAuthenticate::class, 'handleLogin'])->name('admin.handleLogin');
     Route::post('/logout', [AdminAuthenticate::class, 'logout'])->name('admin.logout');
 
+    // Mot de passe oublié (Admin)
+    Route::get('/mot-de-passe-oublie', [\App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'showForgotForm'])->name('admin.password.request');
+    Route::post('/mot-de-passe-oublie', [\App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'sendResetCode'])->name('admin.password.email');
+    Route::get('/verifier-code-reinitialisation', [\App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'showVerifyForm'])->name('admin.password.verify');
+    Route::post('/verifier-code-reinitialisation', [\App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'verifyCode'])->name('admin.password.verify_process');
+    Route::get('/reinitialiser-mot-de-passe', [\App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'showResetForm'])->name('admin.password.reset_form');
+    Route::post('/reinitialiser-mot-de-passe', [\App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'resetPassword'])->name('admin.password.update');
+
     // Onboarding Agents (Activation de compte)
     Route::get('/onboarding/{token}', [\App\Http\Controllers\Admin\AdminOnboardingController::class, 'show'])->name('admin.onboarding');
     Route::post('/onboarding/{token}', [\App\Http\Controllers\Admin\AdminOnboardingController::class, 'complete'])->name('admin.onboarding.complete');

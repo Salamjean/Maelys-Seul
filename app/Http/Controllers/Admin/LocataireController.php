@@ -51,12 +51,18 @@ class LocataireController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'prenoms' => 'required|string|max:255',
-            'contact' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'contact' => 'required|string|unique:users,contact',
             'profession' => 'required|string',
             'adresse' => 'required|string',
             'bien_id' => 'required|exists:biens,id',
             'piece_identite' => 'required|file|mimes:pdf,jpg,png,jpeg|max:2048',
             'contrat_bail' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:5120',
+        ], [
+            'email.unique' => 'Cette adresse email est déjà utilisée par un autre utilisateur.',
+            'contact.unique' => 'Ce numéro de téléphone est déjà utilisé par un autre utilisateur.',
+            'email.required' => 'L\'adresse email est obligatoire.',
+            'contact.required' => 'Le numéro de contact est obligatoire.',
         ]);
 
         $data = $request->except(['password', 'password_confirmation']);

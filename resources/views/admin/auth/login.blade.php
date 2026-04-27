@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion Admin — ImmoSeul</title>
+    <title>Connexion Admin — Maelys-imo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -32,10 +32,10 @@
         {{-- Logo --}}
         <div style="text-align:center; margin-bottom:32px;">
             <div style="margin-bottom:16px;">
-                <img src="{{ asset('assets/images/maelys.jpg') }}" alt="ImmoSeul"
+                <img src="{{ asset('assets/images/maelys.jpg') }}" alt="Maelys-imo"
                     style="width:72px; height:72px; object-fit:cover; border-radius:18px; box-shadow:0 6px 20px rgba(255,94,20,0.45); display:inline-block;">
             </div>
-            <h1 style="font-size:26px; font-weight:800; color:white;">Immo<span style="color:#ff5e14;">Seul</span></h1>
+            <h1 style="font-size:26px; font-weight:800; color:white;">Maelys-<span style="color:#ff5e14;">imo</span></h1>
             <p
                 style="color:rgba(255,255,255,0.5); font-size:13px; margin-top:4px; letter-spacing:2px; text-transform:uppercase;">
                 Espace Administration</p>
@@ -102,12 +102,17 @@
                     </div>
                 </div>
 
-                {{-- Remember --}}
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:24px;">
-                    <input type="checkbox" name="remember" id="remember"
-                        style="accent-color:#ff5e14; width:16px; height:16px;">
-                    <label for="remember" style="font-size:13px; color:#6b7280; cursor:pointer;">Se souvenir de
-                        moi</label>
+                {{-- Remember & Forgot --}}
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <input type="checkbox" name="remember" id="remember"
+                            style="accent-color:#ff5e14; width:16px; height:16px;">
+                        <label for="remember" style="font-size:13px; color:#6b7280; cursor:pointer;">Se souvenir de
+                            moi</label>
+                    </div>
+                    <a href="{{ route('admin.password.request') }}" style="font-size:12px; color:#ff5e14; text-decoration:none; font-weight:600;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+                        Mot de passe oublié ?
+                    </a>
                 </div>
 
                 {{-- Submit --}}
@@ -122,7 +127,7 @@
         </div>
 
         <p style="text-align:center; color:rgba(255,255,255,0.35); font-size:12px; margin-top:24px;">
-            &copy; {{ date('Y') }} ImmoSeul — Tous droits réservés
+            &copy; {{ date('Y') }} Maelys-imo — Tous droits réservés
         </p>
     </div>
 

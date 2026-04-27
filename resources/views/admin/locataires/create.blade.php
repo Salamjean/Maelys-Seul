@@ -26,22 +26,26 @@
                     
                     <div>
                         <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Nom</label>
-                        <input type="text" name="name" required class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm" placeholder="Ex: KOUASSI">
+                        <input type="text" name="name" value="{{ old('name') }}" required class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm @error('name') border-red-500 @enderror" placeholder="Ex: KOUASSI">
+                        @error('name') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Prénoms</label>
-                        <input type="text" name="prenoms" required class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm" placeholder="Ex: Jean Marc">
+                        <input type="text" name="prenoms" value="{{ old('prenoms') }}" required class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm @error('prenoms') border-red-500 @enderror" placeholder="Ex: Jean Marc">
+                        @error('prenoms') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Email (Optionnel)</label>
-                        <input type="email" name="email" class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm" placeholder="client@exemple.com">
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Email (Obligatoire)</label>
+                        <input type="email" name="email" value="{{ old('email') }}" class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm @error('email') border-red-500 @enderror" placeholder="client@exemple.com">
+                        @error('email') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Contact (Téléphone)</label>
-                        <input type="text" name="contact" required class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm" placeholder="07 00 00 00 00">
+                        <input type="text" name="contact" value="{{ old('contact') }}" required class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm @error('contact') border-red-500 @enderror" placeholder="07 00 00 00 00">
+                        @error('contact') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
@@ -51,12 +55,14 @@
                     
                     <div>
                         <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Profession</label>
-                        <input type="text" name="profession" required class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm" placeholder="Ex: Informaticien">
+                        <input type="text" name="profession" value="{{ old('profession') }}" required class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm @error('profession') border-red-500 @enderror" placeholder="Ex: Informaticien">
+                        @error('profession') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
                         <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Adresse actuelle</label>
-                        <textarea name="adresse" required rows="3" class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm" placeholder="Quartier, Rue..."></textarea>
+                        <textarea name="adresse" required rows="3" class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm @error('adresse') border-red-500 @enderror" placeholder="Quartier, Rue...">{{ old('adresse') }}</textarea>
+                        @error('adresse') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
@@ -71,12 +77,13 @@
                                 <input type="hidden" name="bien_id" value="{{ $selectedBien->id }}">
                             </div>
                         @else
-                            <select name="bien_id" required class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm appearance-none">
+                            <select name="bien_id" required class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm appearance-none @error('bien_id') border-red-500 @enderror">
                                 <option value="">Sélectionner le logement</option>
                                 @foreach($biens as $bien)
-                                    <option value="{{ $bien->id }}">{{ $bien->reference }} - {{ $bien->commune }} ({{ number_format($bien->loyer_mensuel, 0, ',', ' ') }} FCFA)</option>
+                                    <option value="{{ $bien->id }}" {{ old('bien_id') == $bien->id ? 'selected' : '' }}>{{ $bien->reference }} - {{ $bien->commune }} ({{ number_format($bien->loyer_mensuel, 0, ',', ' ') }} FCFA)</option>
                                 @endforeach
                             </select>
+                            @error('bien_id') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
                         @endif
                     </div>
                 </div>
@@ -94,12 +101,14 @@
                         <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-[10px] font-bold text-gray-700 mb-2">Pièce d'identité</label>
-                                <input type="file" name="piece_identite" required class="block w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-primary file:text-white transition-all">
+                                <input type="file" name="piece_identite" required class="block w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-primary file:text-white transition-all @error('piece_identite') border-red-500 @enderror">
+                                @error('piece_identite') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
                             </div>
 
                             <div>
                                 <label class="block text-[10px] font-bold text-gray-700 mb-2">Contrat de bail</label>
-                                <input type="file" name="contrat_bail" required class="block w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-primary file:text-white transition-all">
+                                <input type="file" name="contrat_bail" required class="block w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-primary file:text-white transition-all @error('contrat_bail') border-red-500 @enderror">
+                                @error('contrat_bail') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
                             </div>
                         </div>
                     </div>
