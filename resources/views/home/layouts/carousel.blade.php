@@ -1,8 +1,9 @@
 {{-- Hero / Carousel Section --}}
+<section style="position:relative; width:100%; overflow:hidden;">
     {{-- Slides container --}}
     <div id="carousel-wrapper" style="position:relative; width:100%; height:75vh; overflow:hidden;">
 
-        @foreach ($carouselBiens as $i => $prop)
+        @forelse ($carouselBiens as $i => $prop)
             <div class="carousel-slide" data-index="{{ $i }}"
                 style="position:absolute; inset:0; width:100%; height:100%;
                     opacity:{{ $i === 0 ? '1' : '0' }};
@@ -90,40 +91,73 @@
 
                 </div>
             </div>
-        @endforeach
+        @empty
+            {{-- Fallback Slide --}}
+            <div class="carousel-slide" data-index="0"
+                style="position:absolute; inset:0; width:100%; height:100%;
+                    opacity:1;
+                    display:flex; align-items:center; justify-content:center;">
 
-        {{-- Navigation arrows --}}
-        <button onclick="carouselPrev()"
-            style="position:absolute; left:2%; top:50%; transform:translateY(-50%); z-index:20;
-               width:46px; height:46px; border-radius:50%; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
-               color:white; font-size:16px; cursor:pointer; transition:background 0.2s; backdrop-filter:blur(6px);"
-            onmouseover="this.style.background='rgba(255,94,20,0.5)'"
-            onmouseout="this.style.background='rgba(255,255,255,0.1)'">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <button onclick="carouselNext()"
-            style="position:absolute; right:2%; top:50%; transform:translateY(-50%); z-index:20;
-               width:46px; height:46px; border-radius:50%; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
-               color:white; font-size:16px; cursor:pointer; transition:background 0.2s; backdrop-filter:blur(6px);"
-            onmouseover="this.style.background='rgba(255,94,20,0.5)'"
-            onmouseout="this.style.background='rgba(255,255,255,0.1)'">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
+                <img src="{{ asset('assets/images/kk.jpg') }}" alt="Maelys Immobilier"
+                    style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;">
 
-        {{-- Dots --}}
-        <div
-            style="position:absolute; bottom:28px; left:50%; transform:translateX(-50%); display:flex; gap:10px; z-index:20;">
-            @foreach ($carouselBiens as $i => $prop)
-                <button onclick="carouselGo({{ $i }})" id="dot-{{ $i }}"
-                    style="width:{{ $i === 0 ? '28px' : '10px' }}; height:10px; border-radius:999px; border:none; cursor:pointer; transition:all 0.3s;
-                           background:{{ $i === 0 ? '#ff5e14' : 'rgba(255,255,255,0.35)' }};"></button>
-            @endforeach
-        </div>
+                <div
+                    style="position:absolute; inset:0; background:linear-gradient(135deg, rgba(2,36,91,0.8) 0%, rgba(2,36,91,0.5) 60%, rgba(10,31,68,0.7) 100%); z-index:1;">
+                </div>
+
+                <div style="position:relative; z-index:10; width:100%; padding:5rem 5% 3rem; text-align:center; color:white;">
+                    <span style="display:inline-block; background-color:rgba(255,94,20,0.18); border:1px solid rgba(255,94,20,0.45); color:#ff5e14; font-size:12px; font-weight:700; padding:5px 14px; border-radius:999px; margin-bottom:20px; letter-spacing:1px; text-transform:uppercase;">
+                        Bienvenue chez Maelys-IMO
+                    </span>
+                    <h1 style="font-size:clamp(2.5rem,5vw,4rem); font-weight:900; line-height:1.1; margin-bottom:20px; text-transform:uppercase;">
+                        Trouvez le logement <br> de vos <span style="color:#ff5e14;">rêves</span>
+                    </h1>
+                    <p style="font-size:18px; max-width:600px; margin:0 auto 35px; opacity:0.9;">
+                        Nous vous accompagnons dans la recherche de votre futur foyer avec une sélection de biens de qualité.
+                    </p>
+                    <a href="{{ route('biens.all') }}"
+                        style="background-color:#ff5e14; color:white; padding:16px 40px; border-radius:12px; font-weight:700; font-size:16px; text-decoration:none; box-shadow:0 8px 25px rgba(255,94,20,0.4);">
+                        Explorer nos offres
+                    </a>
+                </div>
+            </div>
+        @endforelse
+
+        {{-- Navigation arrows (only if multiple) --}}
+        @if ($carouselBiens->count() > 1)
+            <button onclick="carouselPrev()"
+                style="position:absolute; left:2%; top:50%; transform:translateY(-50%); z-index:20;
+                   width:46px; height:46px; border-radius:50%; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
+                   color:white; font-size:16px; cursor:pointer; transition:background 0.2s; backdrop-filter:blur(6px);"
+                onmouseover="this.style.background='rgba(255,94,20,0.5)'"
+                onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button onclick="carouselNext()"
+                style="position:absolute; right:2%; top:50%; transform:translateY(-50%); z-index:20;
+                   width:46px; height:46px; border-radius:50%; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
+                   color:white; font-size:16px; cursor:pointer; transition:background 0.2s; backdrop-filter:blur(6px);"
+                onmouseover="this.style.background='rgba(255,94,20,0.5)'"
+                onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+            {{-- Dots --}}
+            <div
+                style="position:absolute; bottom:28px; left:50%; transform:translateX(-50%); display:flex; gap:10px; z-index:20;">
+                @foreach ($carouselBiens as $i => $prop)
+                    <button onclick="carouselGo({{ $i }})" id="dot-{{ $i }}"
+                        style="width:{{ $i === 0 ? '28px' : '10px' }}; height:10px; border-radius:999px; border:none; cursor:pointer; transition:all 0.3s;
+                               background:{{ $i === 0 ? '#ff5e14' : 'rgba(255,255,255,0.35)' }};"></button>
+                @endforeach
+            </div>
+        @endif
     </div>
 
 </section>
 
 @push('scripts')
+    @if ($carouselBiens->count() > 1)
     <script>
         let current = 0;
         const slides = document.querySelectorAll('.carousel-slide');
@@ -153,4 +187,5 @@
             carouselGo(current - 1);
         }
     </script>
+    @endif
 @endpush
