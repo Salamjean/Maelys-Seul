@@ -89,6 +89,36 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+                Swal.fire({
+                    title: 'Succès !',
+                    text: "{!! session('success') !!}",
+                    icon: 'success',
+                    confirmButtonColor: '#02245b'
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    title: 'Erreur !',
+                    text: "{!! session('error') !!}",
+                    icon: 'error',
+                    confirmButtonColor: '#ff5e14'
+                });
+            @endif
+
+            @if($errors->any())
+                Swal.fire({
+                    title: 'Erreur de saisie',
+                    html: "{!! implode('<br>', $errors->all()) !!}",
+                    icon: 'error',
+                    confirmButtonColor: '#ff5e14'
+                });
+            @endif
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>

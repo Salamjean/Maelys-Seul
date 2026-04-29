@@ -42,6 +42,8 @@ class LocataireController extends Controller
         $selectedBien = null;
         if ($request->has('bien_id')) {
             $selectedBien = Bien::find($request->bien_id);
+        } elseif (old('bien_id')) {
+            $selectedBien = Bien::find(old('bien_id'));
         }
 
         $biens = Bien::where('statut', 'actif')->get();
