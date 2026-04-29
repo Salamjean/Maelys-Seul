@@ -63,6 +63,7 @@ class LocataireController extends Controller
             'adresse' => 'required|string',
             'bien_id' => 'required|exists:biens,id',
             'agent_etat_lieux' => 'nullable|exists:admins,id',
+            'contract_start_date' => 'required|date',
             'piece_identite' => 'required|file|mimes:pdf,jpg,png,jpeg|max:2048',
             'contrat_bail' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:5120',
         ], [
@@ -133,6 +134,9 @@ class LocataireController extends Controller
                 'statut' => 'en_attente',
             ]);
         }
+
+        // Gestion des paiements d'avance et prorata (basé sur le bien)
+        $this->handleInitialPayments($user, $bien, $request->contract_start_date, $bien->avance);
 
         return redirect()->route('agent.locataires.index')->with('success', 'Locataire ajouté avec succès. Code d\'onboarding : ' . $user->configuration_code);
     }
@@ -321,5 +325,76 @@ class LocataireController extends Controller
 
         $locataire->delete();
         return back()->with('success', 'Locataire supprimé et bien remis en location.');
+    }
+    private function handleInitialPayments($user, $bien, $startDateStr, $moisAvance)
+    {
+        $startDate = \Carbon\Carbon::parse($startDateStr);
+        $loyerMensuel = $bien->loyer_mensuel;
+        $moisAvance = (int)$moisAvance;
+        $adminId = auth()->guard('admin')->id();
+
+        // 1. Calcul du prorata pour le mois en cours
+        $dayOfEntry = $startDate->day;
+        $daysInMonth = $startDate->daysInMonth;
+        
+        $currentDate = $startDate->copy();
+
+        if ($dayOfEntry > 1) {
+            $prorataDays = $daysInMonth - $dayOfEntry; // Selon l'exemple du user (31 - 10 = 21)
+            if ($prorataDays > 0) {
+                $prorataAmount = ($loyerMensuel / $daysInMonth) * $prorataDays;
+                $periode = "Du " . $startDate->format('d/m/Y') . " au " . $startDate->endOfMonth()->format('d/m/Y') . " (Prorata {$prorataDays} jours)";
+                
+                $this->createPaymentRecord($user, $bien, $prorataAmount, $periode, $adminId, 'PR');
+            }
+            // On passe au mois suivant pour les mois d'avance
+            $currentDate->addMonth()->startOfMonth();
+        }
+
+        // 2. Mois d'avance complets
+        for ($i = 0; $i < $moisAvance; $i++) {
+            $periode = ucfirst($currentDate->translatedFormat('F Y'));
+            $this->createPaymentRecord($user, $bien, $loyerMensuel, $periode, $adminId, 'AV');
+            $currentDate->addMonth();
+        }
+    }
+
+    private function createPaymentRecord($user, $bien, $amount, $periode, $adminId, $prefix)
+    {
+        $reference = 'PAY-' . $prefix . '-' . strtoupper(\Illuminate\Support\Str::random(6));
+        
+        // Génération du QR Code
+        $qrData = "MAELYS-IMO - RECU DE PAIEMENT\n" .
+                  "--------------------------\n" .
+                  "Ref: {$reference}\n" .
+                  "Locataire: {$user->name} {$user->prenoms}\n" .
+                  "Bien: {$bien->reference}\n" .
+                  "Montant: " . number_format($amount, 0, ',', ' ') . " FCFA\n" .
+                  "Période: {$periode}\n" .
+                  "Date: " . now()->format('d/m/Y H:i');
+        
+        $qrFileName = 'qrcodes/' . $reference . '.svg';
+        try {
+            if (!\Illuminate\Support\Facades\Storage::disk('public')->exists('qrcodes')) {
+                \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('qrcodes');
+            }
+            $qrContent = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(300)->margin(2)->generate($qrData);
+            \Illuminate\Support\Facades\Storage::disk('public')->put($qrFileName, $qrContent);
+        } catch (\Exception $e) {
+            $qrFileName = null;
+        }
+
+        \App\Models\Payment::create([
+            'user_id' => $user->id,
+            'months_count' => 1,
+            'periode_couverte' => $periode,
+            'amount' => $amount,
+            'payment_method' => 'especes',
+            'reference' => $reference,
+            'status' => 'completed',
+            'paid_at' => now(),
+            'qr_code' => $qrFileName,
+            'agent_id' => $adminId,
+        ]);
     }
 }

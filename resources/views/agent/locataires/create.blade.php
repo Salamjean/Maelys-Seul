@@ -89,16 +89,25 @@
                         @endif
                     </div>
 
-                    <div>
-                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Agent de Recouvrement (État des Lieux Entrée)</label>
-                        <select name="agent_etat_lieux" class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm appearance-none @error('agent_etat_lieux') border-red-500 @enderror">
-                            <option value="">Sélectionner un agent de recouvrement (Optionnel)</option>
-                            @foreach($agents as $agent)
-                                <option value="{{ $agent->id }}" {{ old('agent_etat_lieux') == $agent->id ? 'selected' : '' }}>{{ $agent->name }} {{ $agent->prenoms }}</option>
-                            @endforeach
-                        </select>
-                        <p class="text-[10px] text-gray-400 mt-1 italic">Un code OTP sera envoyé au locataire lors de l'état des lieux.</p>
-                        @error('agent_etat_lieux') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Agent de Recouvrement (EDL Entrée)</label>
+                            <select name="agent_etat_lieux" class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm appearance-none @error('agent_etat_lieux') border-red-500 @enderror">
+                                <option value="">Sélectionner un agent (Optionnel)</option>
+                                @foreach($agents as $agent)
+                                    <option value="{{ $agent->id }}" {{ old('agent_etat_lieux') == $agent->id ? 'selected' : '' }}>{{ $agent->name }} {{ $agent->prenoms }}</option>
+                                @endforeach
+                            </select>
+                            @error('agent_etat_lieux') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Date de prise d'effet (Entrée)</label>
+                            <input type="date" name="contract_start_date" value="{{ old('contract_start_date', date('Y-m-d')) }}" required class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm @error('contract_start_date') border-red-500 @enderror">
+                            @error('contract_start_date') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="md:col-span-2">
+                            <p class="text-[10px] text-gray-400 italic">L'EDL déclenchera un code OTP. Le prorata et l'avance sont basés sur le bien.</p>
+                        </div>
                     </div>
                 </div>
             </div>
