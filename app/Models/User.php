@@ -11,11 +11,27 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable([
-    'name', 'email', 'password', 'prenoms', 'contact', 'profession', 'adresse', 
-    'piece_identite', 'attestation_travail', 'bulletin_salaire',
-    'doc_extra_1', 'doc_extra_2', 'doc_extra_3',
-    'contrat_bail', 'bien_id', 'contract_start_date', 'role',
-    'configuration_code', 'configuration_token', 'loyer_mensuel', 'added_by',
+    'name',
+    'email',
+    'password',
+    'prenoms',
+    'contact',
+    'profession',
+    'adresse',
+    'piece_identite',
+    'attestation_travail',
+    'bulletin_salaire',
+    'doc_extra_1',
+    'doc_extra_2',
+    'doc_extra_3',
+    'contrat_bail',
+    'bien_id',
+    'contract_start_date',
+    'role',
+    'configuration_code',
+    'configuration_token',
+    'loyer_mensuel',
+    'added_by',
     'moved_out_at'
 ])]
 #[Hidden(['password', 'remember_token'])]

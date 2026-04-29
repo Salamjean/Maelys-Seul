@@ -48,6 +48,10 @@ Route::prefix('/')->group(function () {
         Route::get('/payer-loyer/retry/{payment}', [\App\Http\Controllers\Locataire\RentPaymentController::class, 'retry'])->name('locataire.pay.retry');
         Route::get('/mon-contrat', [\App\Http\Controllers\Locataire\RentPaymentController::class, 'contrat'])->name('locataire.contrat');
 
+        // États des Lieux
+        Route::get('/etats-des-lieux', [\App\Http\Controllers\Locataire\EtatLieuController::class, 'index'])->name('locataire.etat_lieux.index');
+        Route::get('/etats-des-lieux/{etatLieu}/pdf', [\App\Http\Controllers\Locataire\EtatLieuController::class, 'downloadPdf'])->name('locataire.etat_lieux.pdf');
+
         // SAV / Support
         Route::get('/support', [\App\Http\Controllers\Locataire\SupportController::class, 'index'])->name('locataire.support.index');
         Route::get('/support/nouveau', [\App\Http\Controllers\Locataire\SupportController::class, 'create'])->name('locataire.support.create');
@@ -189,6 +193,14 @@ Route::prefix('/admin')->group(function () {
         Route::post('/payments/{payment}/verify', [\App\Http\Controllers\Recouvrement\RecouvrementDashboardController::class, 'verifyPayment'])->name('tenants.verify_payment');
         Route::get('/my-payments', [\App\Http\Controllers\Recouvrement\RecouvrementDashboardController::class, 'myPayments'])->name('my_payments');
         Route::get('/mes-versements', [\App\Http\Controllers\Recouvrement\RecouvrementDashboardController::class, 'versements'])->name('versements.index');
+
+        // Etats des lieux
+        Route::get('/etat-lieux', [\App\Http\Controllers\Recouvrement\EtatLieuController::class, 'index'])->name('etat_lieux.index');
+        Route::post('/etat-lieux/{etatLieu}/generate-otp', [\App\Http\Controllers\Recouvrement\EtatLieuController::class, 'generateOtp'])->name('etat_lieux.generate_otp');
+        Route::post('/etat-lieux/{etatLieu}/verify-otp', [\App\Http\Controllers\Recouvrement\EtatLieuController::class, 'verifyOtp'])->name('etat_lieux.verify_otp');
+        Route::get('/etat-lieux/{etatLieu}/form', [\App\Http\Controllers\Recouvrement\EtatLieuController::class, 'showForm'])->name('etat_lieux.form');
+        Route::post('/etat-lieux/{etatLieu}/store', [\App\Http\Controllers\Recouvrement\EtatLieuController::class, 'storeForm'])->name('etat_lieux.store');
+        Route::get('/etat-lieux/{etatLieu}/pdf', [\App\Http\Controllers\Recouvrement\EtatLieuController::class, 'generatePdf'])->name('etat_lieux.pdf');
 
         // Mon Profil
         Route::get('/mon-profil', [\App\Http\Controllers\Recouvrement\ProfileController::class, 'show'])->name('profile.show');

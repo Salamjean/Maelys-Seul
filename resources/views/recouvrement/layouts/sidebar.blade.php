@@ -64,6 +64,15 @@
             </div>
             Mes versements
         </a>
+
+        <a href="{{ route('recouvrement.etat_lieux.index') }}"
+            class="sidebar-link {{ request()->routeIs('recouvrement.etat_lieux.*') ? 'active' : '' }}"
+            style="display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; text-decoration:none; color:rgba(255,255,255,0.6); font-size:14px; font-weight:600; margin-bottom:8px; transition: all 0.3s ease;">
+            <div style="width:32px; height:32px; background:{{ request()->routeIs('recouvrement.etat_lieux.*') ? '#ff5e14' : 'rgba(255,255,255,0.05)' }}; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                <i class="fa-solid fa-clipboard-check" style="font-size:16px; color:white;"></i>
+            </div>
+            États des Lieux
+        </a>
     </nav>
 
 </aside>

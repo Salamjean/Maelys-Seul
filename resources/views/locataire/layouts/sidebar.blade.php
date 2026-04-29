@@ -69,6 +69,14 @@
             Mon Contrat
         </a>
 
+        <a href="{{ route('locataire.etat_lieux.index') }}" 
+           class="flex items-center gap-4 px-4 py-3 rounded-2xl text-white/60 hover:text-white hover:bg-white/5 transition-all font-bold text-sm {{ request()->routeIs('locataire.etat_lieux.*') ? 'bg-white/10 text-white border-l-4 border-secondary' : '' }}">
+            <div class="w-8 h-8 rounded-xl {{ request()->routeIs('locataire.etat_lieux.*') ? 'bg-secondary text-white' : 'bg-white/5 text-white/40' }} flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-clipboard-check text-xs"></i>
+            </div>
+            États des Lieux
+        </a>
+
         <a href="{{ route('locataire.support.index') }}" 
            class="flex items-center gap-4 px-4 py-3 rounded-2xl text-white/60 hover:text-white hover:bg-white/5 transition-all font-bold text-sm {{ request()->routeIs('locataire.support.*') ? 'bg-white/10 text-white border-l-4 border-secondary' : '' }}">
             <div class="w-8 h-8 rounded-xl {{ request()->routeIs('locataire.support.*') ? 'bg-secondary text-white' : 'bg-white/5 text-white/40' }} flex items-center justify-center transition-colors">

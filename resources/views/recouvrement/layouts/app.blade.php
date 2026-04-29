@@ -21,8 +21,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.axios) {
+                window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+                let token = document.head.querySelector('meta[name="csrf-token"]');
+                if (token) {
+                    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+                }
+            }
+        });
+    </script>
     <style>
         * {
             font-family: 'Inter', sans-serif;

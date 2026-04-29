@@ -129,6 +129,8 @@
             </div>
         </div>
 
+
+
         {{-- Onglet Rappel --}}
         <a href="{{ route('agent.rappels.index') }}"
             class="sidebar-link {{ request()->routeIs('agent.rappels.index') ? 'active' : '' }}"

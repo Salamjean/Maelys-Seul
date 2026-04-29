@@ -33,7 +33,8 @@ class LocataireController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('admin.locataires.index', compact('locataires'));
+        $agents = \App\Models\Admin::where('role', 'recouvrement')->get();
+        return view('admin.locataires.index', compact('locataires', 'agents'));
     }
 
     public function create(Request $request)
@@ -44,7 +45,8 @@ class LocataireController extends Controller
         }
 
         $biens = Bien::where('statut', 'actif')->get();
-        return view('admin.locataires.create', compact('biens', 'selectedBien'));
+        $agents = \App\Models\Admin::where('role', 'recouvrement')->get();
+        return view('admin.locataires.create', compact('biens', 'selectedBien', 'agents'));
     }
 
     public function store(Request $request)
@@ -57,6 +59,7 @@ class LocataireController extends Controller
             'profession' => 'required|string',
             'adresse' => 'required|string',
             'bien_id' => 'required|exists:biens,id',
+            'agent_etat_lieux' => 'nullable|exists:admins,id',
             'piece_identite' => 'required|file|mimes:pdf,jpg,png,jpeg|max:2048',
             'contrat_bail' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:5120',
         ], [
@@ -114,6 +117,17 @@ class LocataireController extends Controller
             try {
                 \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\LocataireOnboardingMail($user));
             } catch (\Exception $e) {}
+        }
+
+        // Créer l'état des lieux d'entrée
+        if ($request->filled('agent_etat_lieux')) {
+            \App\Models\EtatLieu::create([
+                'user_id' => $user->id,
+                'bien_id' => $bien->id,
+                'agent_id' => $request->agent_etat_lieux,
+                'type' => 'entree',
+                'statut' => 'en_attente',
+            ]);
         }
 
         return redirect()->route('admin.locataires.index')->with('success', 'Locataire ajouté avec succès. Code d\'onboarding : ' . $user->configuration_code);
@@ -198,12 +212,24 @@ class LocataireController extends Controller
         return view('admin.locataires.moved_out', compact('locataires'));
     }
 
-    public function moveOut(User $locataire)
+    public function moveOut(Request $request, User $locataire)
     {
         if ($locataire->role !== 'locataire') abort(404);
 
         if ($locataire->bien_id) {
-            Bien::where('id', $locataire->bien_id)->update(['statut' => 'actif']);
+            $bienId = $locataire->bien_id;
+            Bien::where('id', $bienId)->update(['statut' => 'actif']);
+
+            // Créer l'état des lieux de sortie
+            if ($request->filled('agent_etat_lieux')) {
+                \App\Models\EtatLieu::create([
+                    'user_id' => $locataire->id,
+                    'bien_id' => $bienId,
+                    'agent_id' => $request->agent_etat_lieux,
+                    'type' => 'sortie',
+                    'statut' => 'en_attente',
+                ]);
+            }
         }
 
         $locataire->update([
