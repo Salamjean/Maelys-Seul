@@ -76,13 +76,23 @@
                     <tr class="hover:bg-blue-50/30 transition-all group">
                         <td class="px-8 py-6">
                             <div class="flex items-center justify-center gap-4">
-                                <div class="w-11 h-11 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-black border border-primary/5 shadow-sm group-hover:scale-110 transition-all">
-                                    {{ substr($req->user->name, 0, 1) }}
-                                </div>
-                                <div class="text-left">
-                                    <p class="text-sm font-black text-gray-800 uppercase tracking-tighter italic leading-tight">{{ $req->user->name }} {{ $req->user->prenoms }}</p>
-                                    <p class="text-[10px] text-secondary font-black uppercase tracking-widest mt-0.5">{{ $req->user->bien->reference ?? 'Logement' }}</p>
-                                </div>
+                                @if($req->user)
+                                    <div class="w-11 h-11 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-black border border-primary/5 shadow-sm group-hover:scale-110 transition-all">
+                                        {{ substr($req->user->name, 0, 1) }}
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-sm font-black text-gray-800 uppercase tracking-tighter italic leading-tight">{{ $req->user->name }} {{ $req->user->prenoms }}</p>
+                                        <p class="text-[10px] text-secondary font-black uppercase tracking-widest mt-0.5">{{ $req->user->bien->reference ?? 'Logement' }}</p>
+                                    </div>
+                                @else
+                                    <div class="w-11 h-11 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary font-black border border-secondary/5 shadow-sm group-hover:scale-110 transition-all">
+                                        {{ substr($req->guest_name, 0, 1) }}
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-sm font-black text-gray-800 uppercase tracking-tighter italic leading-tight">{{ $req->guest_name }}</p>
+                                        <p class="text-[10px] text-secondary font-black uppercase tracking-widest mt-0.5">Visiteur (Contact)</p>
+                                    </div>
+                                @endif
                             </div>
                         </td>
                         <td class="px-8 py-6 max-w-md text-center">
@@ -109,14 +119,18 @@
                             </span>
                         </td>
                         <td class="px-8 py-6 text-center">
-                            @if($req->status === 'pending')
-                                <span class="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-[9px] font-black uppercase tracking-widest italic">En attente</span>
-                            @elseif($req->status === 'answered')
-                                <span class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-[9px] font-black uppercase tracking-widest italic">Réponse envoyée</span>
-                            @elseif($req->status === 'in_progress')
-                                <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-[9px] font-black uppercase tracking-widest italic">En cours</span>
+                            @if($req->user)
+                                @if($req->status === 'pending')
+                                    <span class="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-[9px] font-black uppercase tracking-widest italic">En attente</span>
+                                @elseif($req->status === 'answered')
+                                    <span class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-[9px] font-black uppercase tracking-widest italic">Réponse envoyée</span>
+                                @elseif($req->status === 'in_progress')
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-[9px] font-black uppercase tracking-widest italic">En cours</span>
+                                @else
+                                    <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-[9px] font-black uppercase tracking-widest italic">Terminé</span>
+                                @endif
                             @else
-                                <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-[9px] font-black uppercase tracking-widest italic">Terminé</span>
+                                <span class="text-gray-300 text-[10px] font-bold italic uppercase tracking-widest">N/A</span>
                             @endif
                         </td>
                         <td class="px-8 py-6 text-center">
@@ -124,9 +138,15 @@
                             <p class="text-[10px] text-gray-300 font-bold tracking-widest">{{ $req->created_at ? $req->created_at->format('H:i') : '--:--' }}</p>
                         </td>
                         <td class="px-8 py-6 text-center">
-                            <a href="{{ route('agent.support.show', $req->id) }}" class="w-11 h-11 bg-white text-primary rounded-2xl border-2 border-gray-50 hover:bg-primary hover:text-white hover:scale-110 transition-all shadow-lg shadow-blue-900/5 inline-flex items-center justify-center">
-                                <i class="fa-solid fa-reply"></i>
-                            </a>
+                            @if($req->user)
+                                <a href="{{ route('agent.support.show', $req->id) }}" class="w-11 h-11 bg-white text-primary rounded-2xl border-2 border-gray-50 hover:bg-primary hover:text-white hover:scale-110 transition-all shadow-lg shadow-blue-900/5 inline-flex items-center justify-center">
+                                    <i class="fa-solid fa-reply"></i>
+                                </a>
+                            @else
+                                <a href="{{ route('agent.support.show', $req->id) }}" class="w-11 h-11 bg-white text-gray-400 rounded-2xl border-2 border-gray-50 hover:bg-gray-800 hover:text-white hover:scale-110 transition-all shadow-lg shadow-blue-900/5 inline-flex items-center justify-center" title="Consulter le message">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                            @endif
                         </td>
                     </tr>
                 @empty

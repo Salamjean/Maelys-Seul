@@ -19,6 +19,10 @@ Route::prefix('/')->group(function () {
     Route::get('/biens/{bien}/visite', [\App\Http\Controllers\Home\VisiteController::class, 'create'])->name('visite.create');
     Route::post('/biens/{bien}/visite', [\App\Http\Controllers\Home\VisiteController::class, 'store'])->name('visite.store');
 
+    // Page Contact
+    Route::get('/contact', [\App\Http\Controllers\Home\ContactController::class, 'index'])->name('contact');
+    Route::post('/contact', [\App\Http\Controllers\Home\ContactController::class, 'store'])->name('contact.store');
+
     // Onboarding Locataire
     Route::get('/configurer-mon-compte/{token}', [\App\Http\Controllers\Locataire\OnboardingController::class, 'show'])->name('locataire.onboarding');
     Route::post('/configurer-mon-compte/{token}', [\App\Http\Controllers\Locataire\OnboardingController::class, 'process'])->name('locataire.onboarding.process');

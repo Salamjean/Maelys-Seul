@@ -21,6 +21,8 @@ class SupportController extends Controller
                 $query->where(function($q) use ($search) {
                     $q->where('subject', 'LIKE', "%{$search}%")
                       ->orWhere('message', 'LIKE', "%{$search}%")
+                      ->orWhere('guest_name', 'LIKE', "%{$search}%")
+                      ->orWhere('guest_email', 'LIKE', "%{$search}%")
                       ->orWhereHas('user', function($qu) use ($search) {
                           $qu->where('name', 'LIKE', "%{$search}%")
                             ->orWhere('prenoms', 'LIKE', "%{$search}%");

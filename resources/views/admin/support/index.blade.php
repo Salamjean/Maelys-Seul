@@ -76,13 +76,23 @@
                     <tr class="hover:bg-gray-50/30 transition-colors">
                         <td class="px-8 py-6" style="display:flex; justify-content:center; align-items:center;">
                             <div class="flex items-center gap-4" style="text-align:center">
-                                <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black shadow-sm">
-                                    {{ substr($req->user->name, 0, 1) }}
-                                </div>
-                                <div style="text-align:center">
-                                    <p class="text-sm font-black text-gray-800 leading-tight">{{ $req->user->name }} {{ $req->user->prenoms }}</p>
-                                    <p class="text-[10px] text-secondary font-black uppercase tracking-tighter">{{ $req->user->bien->reference ?? 'Logement' }}</p>
-                                </div>
+                                @if($req->user)
+                                    <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black shadow-sm">
+                                        {{ substr($req->user->name, 0, 1) }}
+                                    </div>
+                                    <div style="text-align:center">
+                                        <p class="text-sm font-black text-gray-800 leading-tight">{{ $req->user->name }} {{ $req->user->prenoms }}</p>
+                                        <p class="text-[10px] text-secondary font-black uppercase tracking-tighter">{{ $req->user->bien->reference ?? 'Logement' }}</p>
+                                    </div>
+                                @else
+                                    <div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary font-black shadow-sm">
+                                        {{ substr($req->guest_name, 0, 1) }}
+                                    </div>
+                                    <div style="text-align:center">
+                                        <p class="text-sm font-black text-gray-800 leading-tight">{{ $req->guest_name }}</p>
+                                        <p class="text-[10px] text-secondary font-black uppercase tracking-tighter">Visiteur (Contact)</p>
+                                    </div>
+                                @endif
                             </div>
                         </td>
                         <td class="px-8 py-6 max-w-md text-center">
@@ -109,14 +119,18 @@
                             </span>
                         </td>
                         <td class="px-8 py-6 text-center">
-                            @if($req->status === 'pending')
-                                <span class="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-[9px] font-black uppercase tracking-widest">En attente</span>
-                            @elseif($req->status === 'answered')
-                                <span class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-[9px] font-black uppercase tracking-widest">Réponse envoyée</span>
-                            @elseif($req->status === 'in_progress')
-                                <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-[9px] font-black uppercase tracking-widest">En cours</span>
+                            @if($req->user)
+                                @if($req->status === 'pending')
+                                    <span class="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-[9px] font-black uppercase tracking-widest">En attente</span>
+                                @elseif($req->status === 'answered')
+                                    <span class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-[9px] font-black uppercase tracking-widest">Réponse envoyée</span>
+                                @elseif($req->status === 'in_progress')
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-[9px] font-black uppercase tracking-widest">En cours</span>
+                                @else
+                                    <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-[9px] font-black uppercase tracking-widest">Terminé</span>
+                                @endif
                             @else
-                                <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-[9px] font-black uppercase tracking-widest">Terminé</span>
+                                <span class="text-gray-300 text-[10px] font-bold italic">N/A</span>
                             @endif
                         </td>
                         <td class="px-8 py-6 text-center">
@@ -124,9 +138,15 @@
                             <p class="text-[10px] text-gray-300">{{ $req->created_at->format('H:i') }}</p>
                         </td>
                         <td class="px-8 py-6 text-center">
-                            <a href="{{ route('admin.support.show', $req->id) }}" class="p-3 bg-gray-50 text-primary rounded-2xl border border-gray-100 hover:bg-primary hover:text-white transition shadow-sm inline-flex items-center justify-center">
-                                <i class="fa-solid fa-reply"></i>
-                            </a>
+                            @if($req->user)
+                                <a href="{{ route('admin.support.show', $req->id) }}" class="p-3 bg-gray-50 text-primary rounded-2xl border border-gray-100 hover:bg-primary hover:text-white transition shadow-sm inline-flex items-center justify-center">
+                                    <i class="fa-solid fa-reply"></i>
+                                </a>
+                            @else
+                                <a href="{{ route('admin.support.show', $req->id) }}" class="p-3 bg-gray-50 text-gray-400 rounded-2xl border border-gray-100 hover:bg-gray-200 transition shadow-sm inline-flex items-center justify-center" title="Voir le message">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                            @endif
                         </td>
                     </tr>
                 @empty

@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            @if(!$supportRequest->admin_response)
+            @if(!$supportRequest->admin_response && $supportRequest->user)
                 {{-- Formulaire de réponse --}}
                 <div class="bg-[#02245b] rounded-[2.5rem] shadow-2xl shadow-blue-900/20 p-10 text-white">
                     <h3 class="text-xl font-black italic uppercase tracking-tighter mb-8 flex items-center gap-3">
@@ -74,7 +74,7 @@
                         </div>
                     </form>
                 </div>
-            @else
+            @elseif($supportRequest->admin_response)
                 <div class="bg-green-600 rounded-[2.5rem] p-10 text-white flex items-center gap-6 shadow-xl shadow-green-500/20">
                     <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-3xl">
                         <i class="fa-solid fa-circle-check"></i>
@@ -84,37 +84,75 @@
                         <p class="text-xs font-bold opacity-80 mt-1 uppercase tracking-widest">Aucune modification supplémentaire n'est possible.</p>
                     </div>
                 </div>
+            @else
+                <div class="bg-gray-100 rounded-[2.5rem] p-10 text-gray-500 flex items-center gap-6 border-2 border-dashed border-gray-200">
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-black italic uppercase tracking-tighter">Message de Contact</h3>
+                        <p class="text-xs font-bold opacity-80 mt-1 uppercase tracking-widest italic">Les visiteurs n'ont pas de tableau de bord. Contactez-les par email ou téléphone.</p>
+                    </div>
+                </div>
             @endif
         </div>
 
         {{-- Sidebar Info --}}
         <div class="lg:col-span-1 space-y-6">
             <div class="bg-white rounded-[2rem] p-8 border border-gray-100 shadow-xl shadow-gray-200/50">
-                <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6 pb-4 border-b border-gray-50">Informations Locataire</h3>
-                
-                <div class="space-y-6">
-                    <div class="flex flex-col">
-                        <span class="text-[9px] font-black text-secondary uppercase tracking-tighter">Identité</span>
-                        <span class="text-sm font-black text-primary uppercase italic">{{ $supportRequest->user->name }} {{ $supportRequest->user->prenoms }}</span>
-                    </div>
+                @if($supportRequest->user)
+                    <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6 pb-4 border-b border-gray-50">Informations Locataire</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex flex-col">
+                            <span class="text-[9px] font-black text-secondary uppercase tracking-tighter">Identité</span>
+                            <span class="text-sm font-black text-primary uppercase italic">{{ $supportRequest->user->name }} {{ $supportRequest->user->prenoms }}</span>
+                        </div>
 
-                    <div class="flex flex-col">
-                        <span class="text-[9px] font-black text-secondary uppercase tracking-tighter">Logement Occupé</span>
-                        <span class="text-sm font-black text-primary italic uppercase">{{ $supportRequest->user->bien->reference ?? 'Logement Expert' }}</span>
-                        <span class="text-[10px] text-gray-400 font-black uppercase tracking-widest">{{ $supportRequest->user->bien->commune ?? 'Côte d\'Ivoire' }}</span>
-                    </div>
+                        <div class="flex flex-col">
+                            <span class="text-[9px] font-black text-secondary uppercase tracking-tighter">Logement Occupé</span>
+                            <span class="text-sm font-black text-primary italic uppercase">{{ $supportRequest->user->bien->reference ?? 'Logement Expert' }}</span>
+                            <span class="text-[10px] text-gray-400 font-black uppercase tracking-widest">{{ $supportRequest->user->bien->commune ?? 'Côte d\'Ivoire' }}</span>
+                        </div>
 
-                    <div class="flex flex-col">
-                        <span class="text-[9px] font-black text-secondary uppercase tracking-tighter">Catégorie</span>
-                        <span class="text-[10px] font-black text-gray-600 bg-gray-50 px-3 py-1 rounded-lg w-fit mt-1 uppercase tracking-widest italic">{{ $supportRequest->category }}</span>
-                    </div>
+                        <div class="flex flex-col">
+                            <span class="text-[9px] font-black text-secondary uppercase tracking-tighter">Catégorie</span>
+                            <span class="text-[10px] font-black text-gray-600 bg-gray-50 px-3 py-1 rounded-lg w-fit mt-1 uppercase tracking-widest italic">{{ $supportRequest->category }}</span>
+                        </div>
 
-                    <div class="pt-4 border-t border-gray-50">
-                        <a href="{{ route('agent.locataires.index', ['search' => $supportRequest->user->contact]) }}" class="text-[10px] font-black text-primary uppercase hover:text-secondary transition flex items-center gap-2 tracking-widest">
-                            <i class="fa-solid fa-user-circle text-xs"></i> Voir le profil complet
-                        </a>
+                        <div class="pt-4 border-t border-gray-50">
+                            <a href="{{ route('agent.locataires.index', ['search' => $supportRequest->user->contact]) }}" class="text-[10px] font-black text-primary uppercase hover:text-secondary transition flex items-center gap-2 tracking-widest">
+                                <i class="fa-solid fa-user-circle text-xs"></i> Voir le profil complet
+                            </a>
+                        </div>
                     </div>
-                </div>
+                @else
+                    <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6 pb-4 border-b border-gray-50">Informations Visiteur</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex flex-col">
+                            <span class="text-[9px] font-black text-secondary uppercase tracking-tighter">Nom</span>
+                            <span class="text-sm font-black text-primary uppercase italic">{{ $supportRequest->guest_name }}</span>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <span class="text-[9px] font-black text-secondary uppercase tracking-tighter">Email</span>
+                            <span class="text-sm font-black text-primary italic">{{ $supportRequest->guest_email }}</span>
+                        </div>
+
+                        @if($supportRequest->guest_phone)
+                        <div class="flex flex-col">
+                            <span class="text-[9px] font-black text-secondary uppercase tracking-tighter">Téléphone</span>
+                            <span class="text-sm font-black text-primary font-bold italic">{{ $supportRequest->guest_phone }}</span>
+                        </div>
+                        @endif
+
+                        <div class="flex flex-col">
+                            <span class="text-[9px] font-black text-secondary uppercase tracking-tighter">Source</span>
+                            <span class="text-[10px] font-black text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg w-fit mt-1 uppercase tracking-widest italic">PAGE CONTACT</span>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

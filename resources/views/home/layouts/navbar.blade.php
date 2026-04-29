@@ -24,15 +24,15 @@
                     class="px-4 py-2 text-sm font-medium text-white hover:text-orange-400 rounded-lg hover:bg-white/10 transition-all">
                     Accueil
                 </a>
-                <a href="#"
+                <a href="{{ route('biens.all') }}"
                     class="px-4 py-2 text-sm font-medium text-blue-200 hover:text-orange-400 rounded-lg hover:bg-white/10 transition-all">
-                    Locations
+                    Biens
                 </a>
                 <a href="#"
                     class="px-4 py-2 text-sm font-medium text-blue-200 hover:text-orange-400 rounded-lg hover:bg-white/10 transition-all">
                     Wilayas
                 </a>
-                <a href="#"
+                <a href="{{ route('contact') }}"
                     class="px-4 py-2 text-sm font-medium text-blue-200 hover:text-orange-400 rounded-lg hover:bg-white/10 transition-all">
                     Contact
                 </a>
@@ -77,15 +77,15 @@
                 class="block px-4 py-2.5 text-sm font-medium text-white rounded-lg hover:bg-white/10 transition">
                 <i class="fa-solid fa-house mr-2 text-orange-400"></i> Accueil
             </a>
-            <a href="#"
+            <a href="{{ route('biens.all') }}"
                 class="block px-4 py-2.5 text-sm font-medium text-blue-200 rounded-lg hover:bg-white/10 transition">
-                <i class="fa-solid fa-file-contract mr-2 text-orange-400"></i> Locations
+                <i class="fa-solid fa-file-contract mr-2 text-orange-400"></i> Biens
             </a>
             <a href="#"
                 class="block px-4 py-2.5 text-sm font-medium text-blue-200 rounded-lg hover:bg-white/10 transition">
                 <i class="fa-solid fa-map-location-dot mr-2 text-orange-400"></i> Wilayas
             </a>
-            <a href="#"
+            <a href="{{ route('contact') }}"
                 class="block px-4 py-2.5 text-sm font-medium text-blue-200 rounded-lg hover:bg-white/10 transition">
                 <i class="fa-solid fa-envelope mr-2 text-orange-400"></i> Contact
             </a>
