@@ -17,7 +17,7 @@ class LocataireController extends Controller
 
         $locataires = User::where('role', 'locataire')
             ->whereNull('moved_out_at')
-            ->with('bien')
+            ->with(['bien', 'etatLieux'])
             ->when($search, function($query) use ($search) {
                 $query->where(function($q) use ($search) {
                     $q->where('name', 'LIKE', "%{$search}%")
@@ -224,6 +224,15 @@ class LocataireController extends Controller
 
             // Créer l'état des lieux de sortie
             if ($request->filled('agent_etat_lieux')) {
+                $hasEntryInventory = \App\Models\EtatLieu::where('user_id', $locataire->id)
+                    ->where('type', 'entree')
+                    ->where('statut', 'termine')
+                    ->exists();
+
+                if (!$hasEntryInventory) {
+                    return redirect()->back()->with('error', "Impossible d'assigner un agent pour l'état des lieux de sortie tant que l'état des lieux d'entrée n'est pas terminé.");
+                }
+
                 \App\Models\EtatLieu::create([
                     'user_id' => $locataire->id,
                     'bien_id' => $bienId,

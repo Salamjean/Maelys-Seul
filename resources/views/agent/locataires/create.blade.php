@@ -88,6 +88,18 @@
                             @error('bien_id') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
                         @endif
                     </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Agent de Recouvrement (État des Lieux Entrée)</label>
+                        <select name="agent_etat_lieux" class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-secondary focus:bg-white outline-none transition-all font-bold text-sm appearance-none @error('agent_etat_lieux') border-red-500 @enderror">
+                            <option value="">Sélectionner un agent de recouvrement (Optionnel)</option>
+                            @foreach($agents as $agent)
+                                <option value="{{ $agent->id }}" {{ old('agent_etat_lieux') == $agent->id ? 'selected' : '' }}>{{ $agent->name }} {{ $agent->prenoms }}</option>
+                            @endforeach
+                        </select>
+                        <p class="text-[10px] text-gray-400 mt-1 italic">Un code OTP sera envoyé au locataire lors de l'état des lieux.</p>
+                        @error('agent_etat_lieux') <p class="text-red-500 text-[10px] mt-1 font-bold">{{ $message }}</p> @enderror
+                    </div>
                 </div>
             </div>
 

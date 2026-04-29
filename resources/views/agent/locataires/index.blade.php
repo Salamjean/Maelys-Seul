@@ -119,9 +119,10 @@
                                         title="Saisir Code OTP">
                                     <i class="fa-solid fa-key"></i>
                                 </button>
-                                <form action="{{ route('agent.locataires.move_out', $l->id) }}" method="POST" onsubmit="return confirm('Confirmer le déménagement de ce locataire ? Le bien sera libéré.')">
+                                <form id="move-out-form-{{ $l->id }}" action="{{ route('agent.locataires.move_out', $l->id) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="p-2 bg-indigo-50/50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition shadow-sm" title="Déménagement">
+                                    <input type="hidden" name="agent_etat_lieux" id="agent-input-{{ $l->id }}">
+                                    <button type="button" onclick="confirmMoveOut({{ $l->id }}, '{{ addslashes($l->name) }} {{ addslashes($l->prenoms) }}', {{ $l->etatLieux->where('type', 'entree')->where('statut', 'termine')->count() > 0 ? 'true' : 'false' }})" class="p-2 bg-indigo-50/50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition shadow-sm" title="Déménagement">
                                         <i class="fa-solid fa-truck-ramp-box"></i>
                                     </button>
                                 </form>
@@ -157,3 +158,70 @@
     @endif
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    const agentsData = @json($agents ?? []);
+    
+    async function confirmMoveOut(id, name, hasEntryInventory) {
+        let agentOptions = agentsData.reduce((acc, agent) => {
+            acc[agent.id] = agent.name + ' ' + (agent.prenoms || '');
+            return acc;
+        }, { '': 'Aucun agent (Pas d\'état des lieux)' });
+
+        let htmlContent = `
+            <p class="text-sm text-gray-500 mb-4">Vous êtes sur le point d'enregistrer le déménagement de <strong>${name}</strong>.</p>
+        `;
+
+        if (!hasEntryInventory) {
+            htmlContent += `
+                <div class="p-4 bg-red-50 border border-red-100 rounded-2xl mb-4">
+                    <p class="text-[10px] text-red-600 font-black uppercase tracking-widest leading-tight">
+                        ⚠️ L'état des lieux d'entrée n'a pas été terminé. 
+                        Vous ne pouvez pas assigner d'agent pour la sortie tant que l'entrée n'est pas validée.
+                    </p>
+                </div>
+            `;
+            // Vider les options si pas d'entrée
+            agentOptions = { '': 'Option désactivée (Entrée manquante)' };
+        } else {
+            htmlContent += `
+                <p class="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-2 text-left">Sélectionnez un agent de recouvrement pour l'état des lieux de sortie :</p>
+            `;
+        }
+
+        const { value: selectedAgent, isConfirmed } = await Swal.fire({
+            title: '<span style="font-family:Outfit; font-weight:800;">Déménagement</span>',
+            html: htmlContent,
+            input: 'select',
+            inputOptions: agentOptions,
+            inputValue: '',
+            inputAttributes: {
+                class: !hasEntryInventory ? 'bg-gray-100 cursor-not-allowed opacity-50' : ''
+            },
+            showCancelButton: true,
+            confirmButtonColor: '#ff5e14',
+            cancelButtonColor: '#02245b',
+            confirmButtonText: 'Confirmer',
+            cancelButtonText: 'Annuler',
+            borderRadius: '2.5rem',
+            customClass: { popup: 'rounded-[3rem]' },
+            didOpen: () => {
+                if (!hasEntryInventory) {
+                    const select = Swal.getInput();
+                    select.disabled = true;
+                }
+            }
+        });
+
+        if (isConfirmed) {
+            if (!hasEntryInventory && selectedAgent !== '') {
+                 // Sécurité JS supplémentaire
+                 return;
+            }
+            document.getElementById('agent-input-' + id).value = selectedAgent;
+            document.getElementById('move-out-form-' + id).submit();
+        }
+    }
+</script>
+@endpush

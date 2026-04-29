@@ -45,6 +45,11 @@ class User extends Authenticatable
         return $this->belongsTo(Bien::class);
     }
 
+    public function etatLieux()
+    {
+        return $this->hasMany(EtatLieu::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *

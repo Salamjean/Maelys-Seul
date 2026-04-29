@@ -20,7 +20,7 @@ class LocataireController extends Controller
 
         $locataires = User::where('role', 'locataire')
             ->whereNull('moved_out_at')
-            ->with('bien')
+            ->with(['bien', 'etatLieux'])
             ->when($search, function($query) use ($search) {
                 $query->where(function($q) use ($search) {
                     $q->where('name', 'LIKE', "%{$search}%")
@@ -36,7 +36,8 @@ class LocataireController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('agent.locataires.index', compact('locataires'));
+        $agents = \App\Models\Admin::where('role', 'recouvrement')->get();
+        return view('agent.locataires.index', compact('locataires', 'agents'));
     }
 
     public function create(Request $request)
@@ -47,7 +48,8 @@ class LocataireController extends Controller
         }
 
         $biens = Bien::where('statut', 'actif')->get();
-        return view('agent.locataires.create', compact('biens', 'selectedBien'));
+        $agents = \App\Models\Admin::where('role', 'recouvrement')->get();
+        return view('agent.locataires.create', compact('biens', 'selectedBien', 'agents'));
     }
 
     public function store(Request $request)
@@ -60,6 +62,7 @@ class LocataireController extends Controller
             'profession' => 'required|string',
             'adresse' => 'required|string',
             'bien_id' => 'required|exists:biens,id',
+            'agent_etat_lieux' => 'nullable|exists:admins,id',
             'piece_identite' => 'required|file|mimes:pdf,jpg,png,jpeg|max:2048',
             'contrat_bail' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:5120',
         ], [
@@ -118,6 +121,17 @@ class LocataireController extends Controller
             try {
                 Mail::to($user->email)->send(new LocataireOnboardingMail($user));
             } catch (\Exception $e) {}
+        }
+
+        // Créer l'état des lieux d'entrée
+        if ($request->filled('agent_etat_lieux')) {
+            \App\Models\EtatLieu::create([
+                'user_id' => $user->id,
+                'bien_id' => $bien->id,
+                'agent_id' => $request->agent_etat_lieux,
+                'type' => 'entree',
+                'statut' => 'en_attente',
+            ]);
         }
 
         return redirect()->route('agent.locataires.index')->with('success', 'Locataire ajouté avec succès. Code d\'onboarding : ' . $user->configuration_code);
@@ -253,15 +267,36 @@ class LocataireController extends Controller
         return view('agent.locataires.moved_out', compact('locataires'));
     }
 
-    public function moveOut(User $locataire)
+    public function moveOut(Request $request, User $locataire)
     {
         if ($locataire->role !== 'locataire') abort(404);
 
         // Libérer le bien
         if ($locataire->bien_id) {
-            $bien = Bien::find($locataire->bien_id);
+            $bienId = $locataire->bien_id;
+            $bien = Bien::find($bienId);
             if ($bien) {
                 $bien->update(['statut' => 'actif']);
+            }
+
+            // Créer l'état des lieux de sortie
+            if ($request->filled('agent_etat_lieux')) {
+                $hasEntryInventory = \App\Models\EtatLieu::where('user_id', $locataire->id)
+                    ->where('type', 'entree')
+                    ->where('statut', 'termine')
+                    ->exists();
+
+                if (!$hasEntryInventory) {
+                    return redirect()->back()->with('error', "Impossible d'assigner un agent pour l'état des lieux de sortie tant que l'état des lieux d'entrée n'est pas terminé.");
+                }
+
+                \App\Models\EtatLieu::create([
+                    'user_id' => $locataire->id,
+                    'bien_id' => $bienId,
+                    'agent_id' => $request->agent_etat_lieux,
+                    'type' => 'sortie',
+                    'statut' => 'en_attente',
+                ]);
             }
         }
 
